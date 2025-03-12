@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -24,6 +24,8 @@ export default function QuestionsScreen({ route, navigation }) {
   const [isQuizFinished, setIsQuizFinished] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [incorrectAnswers, setIncorrectAnswers] = useState([]);
+
+  const scrollViewRef = useRef(null);
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -86,6 +88,8 @@ export default function QuestionsScreen({ route, navigation }) {
     setIsQuizFinished(false);
     setSelectedOptionIndex(null);
     setIncorrectAnswers([]);
+
+    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
   };
 
   if (quizQuestions.length === 0 && quizType === "personal") {
@@ -120,7 +124,10 @@ export default function QuestionsScreen({ route, navigation }) {
   if (isQuizFinished) {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView
+          ref={scrollViewRef}
+          contentContainerStyle={styles.scrollContainer}
+        >
           <Text style={styles.title}>Quiz Finished!</Text>
           <Text style={styles.scoreText}>
             You scored {score} out of {quizQuestions.length}!
@@ -222,11 +229,10 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 16,
+    marginVertical: 10,
   },
   scrollContainer_questions: {
-    flex: 1,
-    justifyContent: "center",
-    maxHeight: "100%",
+    marginVertical: 30,
     padding: 16,
   },
   title: {
