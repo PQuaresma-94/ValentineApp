@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -42,33 +43,38 @@ export default function ViewQuestionsScreen({ navigation }) {
     }
   };
 
+  const handleEditQuestion = (questionObj) => {
+    console.log("Editing Question:", questionObj); // 🔹 Logs the question object
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Your Custom Questions</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.container}>
+        <Text style={styles.title}>Your Custom Questions</Text>
 
-      {customQuestions.length === 0 ? (
-        <Text style={styles.noQuestionsText}>No questions added yet.</Text>
-      ) : (
-        customQuestions.map((q, index) => (
-          <View key={index} style={styles.questionCard}>
-            <Text style={styles.questionText}>{q.question}</Text>
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => handleDeleteQuestion(index)}
-            >
-              <Text style={styles.buttonText}>Delete</Text>
-            </TouchableOpacity>
-          </View>
-        ))
-      )}
-
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.buttonText}>Back</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        {customQuestions.length === 0 ? (
+          <Text style={styles.noQuestionsText}>No questions added yet.</Text>
+        ) : (
+          customQuestions.map((q, index) => (
+            <View key={index} style={styles.questionCard}>
+              <Text style={styles.questionText}>{q.question}</Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => handleEditQuestion(q)}
+              >
+                <Text style={styles.buttonText}>Edit Question</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => handleDeleteQuestion(index)}
+              >
+                <Text style={styles.buttonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          ))
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -97,7 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
   },
-  deleteButton: {
+  button: {
     backgroundColor: "#ff5c5c",
     padding: 8,
     borderRadius: 5,

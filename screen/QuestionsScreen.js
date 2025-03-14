@@ -224,7 +224,7 @@ export default function QuestionsScreen({ route, navigation }) {
 // Basic styling
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: "#ffe6e6",
   },
   scrollContainer: {
