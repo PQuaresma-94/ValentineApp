@@ -43,8 +43,11 @@ export default function ViewQuestionsScreen({ navigation }) {
     }
   };
 
-  const handleEditQuestion = (questionObj) => {
-    console.log("Editing Question:", questionObj); // 🔹 Logs the question object
+  const handleEditQuestion = (questionObj, index) => {
+    navigation.navigate("Edit Questions", {
+      questionToEdit: questionObj,
+      questionIndex: index,
+    });
   };
 
   return (
@@ -60,7 +63,7 @@ export default function ViewQuestionsScreen({ navigation }) {
               <Text style={styles.questionText}>{q.question}</Text>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => handleEditQuestion(q)}
+                onPress={() => handleEditQuestion(q, index)}
               >
                 <Text style={styles.buttonText}>Edit Question</Text>
               </TouchableOpacity>

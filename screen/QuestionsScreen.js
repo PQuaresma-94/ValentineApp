@@ -103,7 +103,7 @@ export default function QuestionsScreen({ route, navigation }) {
             </Text>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("AddQuestion")}
+              onPress={() => navigation.navigate("Add Question")}
             >
               <Text style={styles.buttonText}>Add Custom Questions</Text>
             </TouchableOpacity>

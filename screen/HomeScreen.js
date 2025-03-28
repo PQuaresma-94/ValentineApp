@@ -26,7 +26,7 @@ export default function HomeScreen({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("AddQuestion")}
+        onPress={() => navigation.navigate("Add Question")}
       >
         <Text style={styles.buttonText}>Add Custom Questions</Text>
       </TouchableOpacity>
