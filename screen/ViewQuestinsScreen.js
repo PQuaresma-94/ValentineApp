@@ -56,7 +56,15 @@ export default function ViewQuestionsScreen({ navigation }) {
         <Text style={styles.title}>Your Custom Questions</Text>
 
         {customQuestions.length === 0 ? (
-          <Text style={styles.noQuestionsText}>No questions added yet.</Text>
+          <View style={styles.questionCard}>
+            <Text style={styles.noQuestionsText}>No questions added yet.</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("Add Question")}
+            >
+              <Text style={styles.buttonText}>Add Custom Question</Text>
+            </TouchableOpacity>
+          </View>
         ) : (
           customQuestions.map((q, index) => (
             <View key={index} style={styles.questionCard}>
@@ -128,6 +136,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#333",
     fontSize: 16,
-    marginTop: 10,
+    marginVertical: 10,
   },
 });
