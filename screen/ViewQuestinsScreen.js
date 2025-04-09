@@ -16,9 +16,12 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Fontisto } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
+import DeleteQuestionModal from "../modals/DeleteQuestionModal";
 
 export default function ViewQuestionsScreen({ navigation }) {
   const [customQuestions, setCustomQuestions] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
 
   const loadCustomQuestions = async () => {
     try {
@@ -50,6 +53,19 @@ export default function ViewQuestionsScreen({ navigation }) {
     } catch (error) {
       console.error("Error deleting question:", error);
     }
+  };
+
+  const confirmDelete = () => {
+    if (selectedQuestionIndex !== null) {
+      handleDeleteQuestion(selectedQuestionIndex);
+    }
+    setModalVisible(false);
+    setSelectedQuestionIndex(null);
+  };
+
+  const cancelDelete = () => {
+    setModalVisible(false);
+    setSelectedQuestionIndex(null);
   };
 
   const handleEditQuestion = (questionObj, index) => {
@@ -96,7 +112,10 @@ export default function ViewQuestionsScreen({ navigation }) {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => handleDeleteQuestion(index)}
+                onPress={() => {
+                  setSelectedQuestionIndex(index);
+                  setModalVisible(true);
+                }}
               >
                 <Text style={styles.buttonText}>Delete</Text>
               </TouchableOpacity>
@@ -104,6 +123,12 @@ export default function ViewQuestionsScreen({ navigation }) {
           ))
         )}
       </ScrollView>
+      {/* Modal Component */}
+      <DeleteQuestionModal
+        visible={modalVisible}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
     </SafeAreaView>
   );
 }

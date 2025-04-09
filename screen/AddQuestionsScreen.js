@@ -19,6 +19,7 @@ export default function AddQuestionScreen({ navigation }) {
         JSON.stringify(updatedQuestions)
       );
       Alert.alert("Success", "Question added!");
+      navigation.goBack();
     } catch (error) {
       console.error("Error saving question:", error);
       Alert.alert("Error", "Failed to save question.");
