@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import {
   View,
   Text,
@@ -9,13 +14,11 @@ import {
   SafeAreaView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Fontisto } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function ViewQuestionsScreen({ navigation }) {
   const [customQuestions, setCustomQuestions] = useState([]);
-
-  useEffect(() => {
-    loadCustomQuestions();
-  }, []);
 
   const loadCustomQuestions = async () => {
     try {
@@ -26,6 +29,12 @@ export default function ViewQuestionsScreen({ navigation }) {
       console.error("Error loading custom questions:", error);
     }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadCustomQuestions();
+    }, [])
+  );
 
   const handleDeleteQuestion = async (index) => {
     const updatedQuestions = [...customQuestions];
@@ -49,6 +58,16 @@ export default function ViewQuestionsScreen({ navigation }) {
       questionIndex: index,
     });
   };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("Add Question")}>
+          <Fontisto name="plus-a" size={25} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles.container}>

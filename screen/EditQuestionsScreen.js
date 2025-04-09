@@ -25,7 +25,7 @@ export default function EditQuestionScreen({ navigation, route }) {
         JSON.stringify(existingQuestions)
       );
       Alert.alert("Success", "Question updated!");
-      navigation.navigate("View Questions");
+      navigation.goBack();
     } catch (error) {
       console.error("Error updating question:", error);
       Alert.alert("Error", "Failed to update question.");
