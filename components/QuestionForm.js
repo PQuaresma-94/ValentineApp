@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  Keyboard,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -23,6 +24,29 @@ export default function QuestionForm({
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(
     initialCorrectAnswerIndex
   );
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  // Listen for keyboard events to get keyboard height.
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      (event) => {
+        setKeyboardHeight(event.endCoordinates.height);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardHeight(0);
+      }
+    );
+
+    // Clean up listeners on unmount
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   // Toggle correct answer selection
   const handleToggleCorrectAnswer = (index) => {
@@ -48,11 +72,16 @@ export default function QuestionForm({
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        { paddingBottom: keyboardHeight },
+      ]}
+    >
       <Text style={styles.title}>{title}</Text>
 
       <TextInput
-        style={styles.input}
+        style={styles.input_question}
         placeholder="Enter your question"
         value={question}
         onChangeText={setQuestion}
@@ -88,13 +117,6 @@ export default function QuestionForm({
       <TouchableOpacity style={styles.saveButton} onPress={handleSaveQuestion}>
         <Text style={styles.buttonText}>Save Question</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.viewButton}
-        onPress={() => navigation.navigate("View Questions")}
-      >
-        <Text style={styles.buttonText}>View Custom Questions</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -104,7 +126,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     backgroundColor: "#ffe6e6",
-    flexGrow: 1,
+    paddingBottom: 300,
   },
   title: {
     fontSize: 22,
@@ -112,6 +134,16 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
     color: "#ff5c5c",
+  },
+  input_question: {
+    borderWidth: 1,
+    borderColor: "#ffb3b3",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+    height: 150,
+    flex: 1,
   },
   input: {
     borderWidth: 1,
@@ -146,13 +178,6 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     backgroundColor: "#ff5c5c",
-    padding: 15,
-    borderRadius: 5,
-    marginTop: 10,
-    alignItems: "center",
-  },
-  viewButton: {
-    backgroundColor: "#ff9999",
     padding: 15,
     borderRadius: 5,
     marginTop: 10,
