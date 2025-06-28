@@ -18,8 +18,9 @@ export default function AddQuestionScreen({ navigation }) {
         "customQuestions",
         JSON.stringify(updatedQuestions)
       );
+      navigation.popToTop();
+      navigation.navigate("View Questions");
       Alert.alert("Success", "Question added!");
-      navigation.goBack();
     } catch (error) {
       console.error("Error saving question:", error);
       Alert.alert("Error", "Failed to save question.");

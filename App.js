@@ -3,11 +3,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // Import the screens
-import HomeScreen from "./screen/HomeScreen";
-import QuestionsScreen from "./screen/QuestionsScreen";
-import AddQuestionScreen from "./screen/AddQuestionsScreen";
-import ViewQuestionsScreen from "./screen/ViewQuestinsScreen";
-import EditQuestionScreen from "./screen/EditQuestionsScreen";
+import HomeScreen from "./src/screen/HomeScreen";
+import QuestionsScreen from "./src/screen/QuestionsScreen";
+import AddQuestionScreen from "./src/screen/AddQuestionsScreen";
+import ViewQuestionsScreen from "./src/screen/ViewQuestinsScreen";
+import EditQuestionScreen from "./src/screen/EditQuestionsScreen";
 
 const Stack = createNativeStackNavigator();
 
